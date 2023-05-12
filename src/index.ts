@@ -55,6 +55,34 @@ app.post(`/create-setup-intent`, async (req, res) => {
     }
 })
 
+/**
+ * This needs to be a public endpoint that returns the payment method associated with the SetupIntent
+ */
+app.get(`/retrieve-setup-intent/:id`, async (req, res) => {
+    try {
+        const clientSecret = req.params.clientSecret
+
+        if (!clientSecret) {
+            throw new Error(`Missing required parameter: client_secret`)
+        }
+
+        console.log(clientSecret)
+
+        const setupIntent = await stripe.setupIntents.retrieve(clientSecret)
+
+        res.status(200)
+            .send(setupIntent)
+    } catch (exception) {
+        if (exception instanceof SyntaxError) {
+            res.status(400)
+                .json({ error: `Missing required parameter: email` })
+        } else {
+            res.status(500)
+                .json({ error: exception })
+        }
+    }
+})
+
 app.listen(port, () => {
     console.log(`Running on port ${port}`)
 })

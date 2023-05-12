@@ -30,3 +30,8 @@ STRIPE_SECRET_KEY=
 ```sh
 yarn && yarn start
 ```
+
+## Development
+
+This is a TypeScript project that uses ts-node to run the app. The entry point is `src/index.ts`.
+This project also opts for using ES Modules instead of CommonJS modules.
