@@ -60,15 +60,15 @@ app.post(`/create-setup-intent`, async (req, res) => {
  */
 app.get(`/retrieve-setup-intent/:id`, async (req, res) => {
     try {
-        const clientSecret = req.params.clientSecret
+        const setupIntentId = req.params.id
 
-        if (!clientSecret) {
+        if (!setupIntentId) {
             throw new Error(`Missing required parameter: client_secret`)
         }
 
-        console.log(clientSecret)
-
-        const setupIntent = await stripe.setupIntents.retrieve(clientSecret)
+        const setupIntent = await stripe.setupIntents.retrieve(setupIntentId, {
+            expand: [`payment_method`]
+        })
 
         res.status(200)
             .send(setupIntent)
